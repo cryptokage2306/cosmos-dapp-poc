@@ -1,6 +1,18 @@
-# Getting Started with Create React App
+# MultiSend Dapp
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Prerequisite
+- Your browser have [keplr wallet](https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap?hl=en) extension
+- Keplr wallet must contain [cudos-public-testnet network](https://docs.cudos.org/build/account-setup.html#link-keplr-to-the-cudos-network).
+- Use [faucet](https://explorer.cudos.org/faucet) to send some cudos token to wallet address
+
+## Setup
+- git clone [cudos-dapp](https://github.com/CudoVentures/cudos-dapps.git)
+- node version > v14
+```sh
+cd multi-send
+nvm use #install node version 14
+yarn #install all dependencies
+```
 
 ## Available Scripts
 
@@ -29,18 +41,23 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+## Know about Pages
+It has two pages which contain following things
+- */* : this is the homepage and contains multisend feature
+- */send* : this is the second page and contains send feature 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## MultiSend (/)
+### Features
+- Can send Tokens to multiple addresses at once
+- Saves gas cost as only one transaction is needed instead of n transactions.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## How to do MultiSend?
+- Add address of recipient and number of cudos tokens sender wants to send. (Make sure you have enough balance to carry out transaction)
+- If you want to add more than 1 receiving address click on [+/-] button present above to increase or decrease number of sender
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Send (/send)
+### Features
+- Can send Tokens to single address and takes 1 transactions
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## How to do Send?
+- Add address of recipient and number of cudos tokens sender wants to send. (Make sure you have enough balance to carry out transaction)

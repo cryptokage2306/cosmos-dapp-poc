@@ -13,6 +13,7 @@ import {
 import {
   HOME_PAGE,
   MULTI_SEND_BASE_PAGE,
+  NFT_BASE_PAGE,
   SEND_BASE_PAGE,
 } from "../../constant";
 
@@ -40,11 +41,15 @@ export const Header = () => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="m-auto" navbar>
+          <NavItem>
+              <NavLink href={MULTI_SEND_BASE_PAGE}>MultiSend</NavLink>
+            </NavItem>
             <NavItem>
               <NavLink href={SEND_BASE_PAGE}>Send</NavLink>
             </NavItem>
+            
             <NavItem>
-              <NavLink href={MULTI_SEND_BASE_PAGE}>MultiSend</NavLink>
+              <NavLink href={NFT_BASE_PAGE}>NFTs</NavLink>
             </NavItem>
           </Nav>
         </Collapse>

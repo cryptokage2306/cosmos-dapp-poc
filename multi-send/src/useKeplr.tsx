@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { SigningStargateClient } from "@cosmjs/stargate";
-import {toast} from 'react-toastify';
-
+import { SigningStargateClient, QueryClient } from "@cosmjs/stargate";
+import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
+import { toast } from "react-toastify";
 
 declare global {
   interface Window {
@@ -12,6 +12,7 @@ declare global {
 
 export const useKeplr = () => {
   const [provider, setProvider] = useState<SigningStargateClient>();
+  const [queryClient, setQueryClient] = useState<QueryClient>();
   const [account, setAccount] = useState("");
   const [isError, setIsError] = useState("");
 
@@ -94,17 +95,21 @@ export const useKeplr = () => {
           }
         )
       );
+      const tm = await Tendermint34Client.connect(
+        "https://sentry1.gcp-uscentral1.cudos.org:26657"
+      );
+      setQueryClient(new QueryClient(tm));
     } catch (err) {
       toast.error(err?.message, {
         position: "top-right",
-        toastId: "error_toast"
-      })
-      setIsError(err?.message)
+        toastId: "error_toast",
+      });
+      setIsError(err?.message);
     }
   };
   useEffect(() => {
     if (!!account && !!provider) return;
     connectWallet();
   }, [provider, account]);
-  return { provider, account, connectWallet, isError };
+  return { provider, account, connectWallet, isError, queryClient };
 };

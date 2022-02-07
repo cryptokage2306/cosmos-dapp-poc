@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import Table from "../../components/Table";
 import { useKeplr } from "../../useKeplr";
 
@@ -9,11 +9,11 @@ export const AllNFTsList = () => {
     { id: string; name: string; creator: string }[]
   >([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { queryClient, provider, account } = useKeplr();
+  const { queryClient, provider, account, isError } = useKeplr();
   useEffect(() => {
     if (!queryClient || !provider || !account) return;
     fetchNFTs();
-  }, [queryClient, provider, account]);
+  }, [queryClient, provider, account, isError]);
   const fetchNFTs = async () => {
     const dd = await queryClient?.queryUnverified(
       "/cudosnode.cudosnode.nft.Query/Denoms",
@@ -33,17 +33,19 @@ export const AllNFTsList = () => {
     ],
     []
   );
+  const centerText = (text: string) => (
+    <div className="text-center">{text}</div>
+  );
+  const render = useCallback(() => {
+    if (isError) return centerText("Please refresh the page");
+    if (isLoading) return centerText("Loading ...");
+    return <Table columns={col} data={data} />;
+  }, [isError, isLoading, data]);
   return (
     <>
       <div>
         <h1 className="text-center">All NFTs</h1>
-        <div className="my-5">
-          {isLoading ? (
-            <div className="text-center">Loading...</div>
-          ) : (
-            <Table columns={col} data={data} />
-          )}
-        </div>
+        <div className="my-5">{render()}</div>
       </div>
     </>
   );

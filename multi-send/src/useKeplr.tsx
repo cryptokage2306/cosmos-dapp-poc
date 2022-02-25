@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { SigningStargateClient, QueryClient } from "@cosmjs/stargate";
+import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
 import { toast } from "react-toastify";
 
@@ -12,6 +13,8 @@ declare global {
 
 export const useKeplr = () => {
   const [provider, setProvider] = useState<SigningStargateClient>();
+  const [cosmwasmProvider, setCosmwasmProvider] =
+    useState<SigningCosmWasmClient>();
   const [queryClient, setQueryClient] = useState<QueryClient>();
   const [account, setAccount] = useState("");
   const [isError, setIsError] = useState("");
@@ -95,6 +98,15 @@ export const useKeplr = () => {
           }
         )
       );
+      setCosmwasmProvider(
+        await SigningCosmWasmClient.connectWithSigner(
+          "https://sentry1.gcp-uscentral1.cudos.org:26657",
+          offlineSigner,
+          {
+            prefix: "cudos",
+          }
+        )
+      );
       const tm = await Tendermint34Client.connect(
         "https://sentry1.gcp-uscentral1.cudos.org:26657"
       );
@@ -111,5 +123,12 @@ export const useKeplr = () => {
     if (!!account && !!provider) return;
     connectWallet();
   }, [provider, account]);
-  return { provider, account, connectWallet, isError, queryClient };
+  return {
+    provider,
+    account,
+    connectWallet,
+    isError,
+    queryClient,
+    cosmwasmProvider,
+  };
 };

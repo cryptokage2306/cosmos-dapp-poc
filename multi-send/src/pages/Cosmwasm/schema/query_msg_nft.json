@@ -1,0 +1,170 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "QueryMsg",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "query_denom_by_id"
+      ],
+      "properties": {
+        "query_denom_by_id": {
+          "type": "object",
+          "required": [
+            "denom_id"
+          ],
+          "properties": {
+            "denom_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "query_denom_by_name"
+      ],
+      "properties": {
+        "query_denom_by_name": {
+          "type": "object",
+          "required": [
+            "denom_name"
+          ],
+          "properties": {
+            "denom_name": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "query_token"
+      ],
+      "properties": {
+        "query_token": {
+          "type": "object",
+          "required": [
+            "denom_id",
+            "token_id"
+          ],
+          "properties": {
+            "denom_id": {
+              "type": "string"
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "query_denom_by_symbol"
+      ],
+      "properties": {
+        "query_denom_by_symbol": {
+          "type": "object",
+          "required": [
+            "symbol"
+          ],
+          "properties": {
+            "symbol": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "query_all_denoms"
+      ],
+      "properties": {
+        "query_all_denoms": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "query_supply"
+      ],
+      "properties": {
+        "query_supply": {
+          "type": "object",
+          "required": [
+            "denom_id"
+          ],
+          "properties": {
+            "denom_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "query_owner"
+      ],
+      "properties": {
+        "query_owner": {
+          "type": "object",
+          "required": [
+            "address",
+            "denom_id"
+          ],
+          "properties": {
+            "address": {
+              "type": "string"
+            },
+            "denom_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "query_approved_addresses"
+      ],
+      "properties": {
+        "query_approved_addresses": {
+          "type": "object",
+          "required": [
+            "denom_id",
+            "token_id"
+          ],
+          "properties": {
+            "denom_id": {
+              "type": "string"
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

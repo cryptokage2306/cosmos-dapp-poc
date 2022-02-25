@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Collapse,
   Navbar,
@@ -14,6 +15,7 @@ import {
   HOME_PAGE,
   MULTI_SEND_BASE_PAGE,
   NFT_BASE_PAGE,
+  NFT_WRITE_PAGE,
   SEND_BASE_PAGE,
 } from "../../constant";
 
@@ -28,6 +30,8 @@ export const Header = () => {
     setBalance(bal?.amount / 10 ** 18);
   };
 
+  const navigate = useNavigate();
+
   const toggle = () => setIsOpen(!isOpen);
   useEffect(() => {
     if (!account || !provider) return;
@@ -41,15 +45,43 @@ export const Header = () => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="m-auto" navbar>
-          <NavItem>
-              <NavLink href={MULTI_SEND_BASE_PAGE}>MultiSend</NavLink>
+            {/* <NavItem>
+              <Button
+                color="transparent"
+                tag={NavLink}
+                onClick={() => navigate(MULTI_SEND_BASE_PAGE)}
+              >
+                MultiSend
+              </Button>
             </NavItem>
             <NavItem>
-              <NavLink href={SEND_BASE_PAGE}>Send</NavLink>
-            </NavItem>
-            
+              <Button
+                color="transparent"
+                tag={NavLink}
+                onClick={() => navigate(SEND_BASE_PAGE)}
+              >
+                Send
+              </Button>
+            </NavItem> */}
+
             <NavItem>
-              <NavLink href={NFT_BASE_PAGE}>NFTs</NavLink>
+              <Button
+                color="transparent"
+                tag={NavLink}
+                onClick={() => navigate(NFT_BASE_PAGE)}
+              >
+                NFTs Read
+              </Button>
+              {/* <NavLink href={NFT_BASE_PAGE}>NFTs Read</NavLink> */}
+            </NavItem>
+            <NavItem>
+              <Button
+                color="transparent"
+                tag={NavLink}
+                onClick={() => navigate(NFT_WRITE_PAGE)}
+              >
+                NFT Write
+              </Button>
             </NavItem>
           </Nav>
         </Collapse>

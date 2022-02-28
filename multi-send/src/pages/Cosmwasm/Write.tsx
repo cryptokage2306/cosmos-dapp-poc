@@ -39,20 +39,25 @@ export const Write = () => {
   const onSubmit =
     (ind: number) =>
     async ({ formData }: { formData: any }) => {
-      console.log(formData);
-      let result = await cosmwasmProvider?.execute(
-        account,
-        CONTRACT_ADDRESS,
-        formData,
-        calculateFee(160000, "0.01acudos"),
-        "testing nft binding"
-      );
-      console.log(result);
-      // let result = await cosmwasmProvider?.execute()
-      // setResult({
-      //   id: ind,
-      //   result: JSON.stringify(result, null, 2),
-      // });
+      try {
+        let result = await cosmwasmProvider?.execute(
+          account,
+          CONTRACT_ADDRESS,
+          formData,
+          calculateFee(160000, "0.01acudos"),
+          "testing nft binding"
+        );
+        setResult({
+          id: ind,
+          result: JSON.stringify(result, null, 2),
+        });
+      } catch (err) {
+        console.error(err);
+        setResult({
+          id: ind,
+          result: err?.message || "error occurred",
+        });
+      }
     };
   return (
     <div>
@@ -61,6 +66,8 @@ export const Write = () => {
         {d.map((item, id) => (
           <div>
             <JSONForm schema={item} onSubmit={onSubmit(id)} />
+
+            {result.id === id && <section>{result.result}</section>}
           </div>
         ))}
       </div>

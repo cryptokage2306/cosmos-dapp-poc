@@ -29,15 +29,23 @@ export const Cosmwasm = () => {
   const onSubmit =
     (ind: number) =>
     async ({ formData }: { formData: QueryMsg }) => {
-      let result = await cosmwasmProvider?.queryContractSmart(
-        CONTRACT_ADDRESS,
-        formData
-      );
-      console.log(result);
-      setResult({
-        id: ind,
-        result: JSON.stringify(result, null, 2),
-      });
+      try {
+        let result = await cosmwasmProvider?.queryContractSmart(
+          CONTRACT_ADDRESS,
+          formData
+        );
+        console.log(result);
+        setResult({
+          id: ind,
+          result: JSON.stringify(result, null, 2),
+        });
+      } catch (err) {
+        console.error(err);
+        setResult({
+          id: ind,
+          result: err?.message || "error occurred",
+        });
+      }
     };
   return (
     <div>
@@ -46,6 +54,7 @@ export const Cosmwasm = () => {
         {d.map((item, id) => (
           <div>
             <JSONForm schema={item} onSubmit={onSubmit(id)} />
+            {id == result.id && <section>{result.result}</section>}
           </div>
         ))}
       </div>

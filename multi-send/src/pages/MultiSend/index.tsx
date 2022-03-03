@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { calculateFee, coins } from "@cosmjs/stargate";
 import { useForm, useFieldArray } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -11,6 +12,9 @@ export function MultiSend() {
       multiSend: [{ address: "", amount: 0 }],
     },
   });
+  const [selectedFile, setSelectedFile] =
+    useState<{ address: string; amount: number }[]>();
+  const [isReadable, setIsReadable] = useState(false);
   const watchMultisend = watch("multiSend");
 
   const { fields, append, remove } = useFieldArray({
@@ -33,7 +37,7 @@ export function MultiSend() {
             },
           ],
           outputs: multiSend.map((item) => ({
-            coins: coins(item.amount, "acudos"),
+            coins: coins(item.amount * 10 ** 18, "acudos"),
             address: item.address,
           })),
         },
@@ -52,6 +56,43 @@ export function MultiSend() {
       toast.error(err?.message);
     }
   };
+
+  function onChange(event) {
+    const reader = new FileReader();
+    reader.onload = onReaderLoad;
+    reader.readAsText(event.target.files[0]);
+  }
+
+  function onReaderLoad(event) {
+    try {
+      const obj = JSON.parse(event.target.result);
+      if (Array.isArray(obj)) {
+        const targets: { address: string; amount: number }[] = [];
+        obj.forEach((item) => {
+          if (!item.address || !item.amount)
+            throw new Error("Address or amount is not present, please select different file");
+          targets.push({
+            address: item.address,
+            amount: item.amount,
+          });
+        });
+        setSelectedFile(targets);
+        return;
+      }
+      throw new Error("Cannot be parsed, please select different file");
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.message);
+    }
+  }
+
+  useEffect(() => {
+    if (!selectedFile?.length) return;
+    fields.forEach((_, i) => remove(i));
+    selectedFile.forEach((item) => append(item));
+    setIsReadable(true);
+  }, [selectedFile]);
+
 
   return (
     <>
@@ -85,21 +126,31 @@ export function MultiSend() {
           </div>
         </Col>
         <Col className="text-center m-auto" xs={12} md="6">
+          <input
+            type={"file"}
+            accept={".json"}
+            onChange={onChange}
+          />
           <ButtonGroup>
             <Button
               color="primary"
+              disabled={isReadable}
               onClick={() => append({ address: "", amount: 0 })}
             >
               +
             </Button>
             <Button
               color="danger"
-              disabled={fields.length === 1}
+              disabled={fields.length === 1 || isReadable}
               onClick={() => remove(fields.length - 1)}
             >
               -
             </Button>
+            {isReadable && <Button onClick={() => setIsReadable(false)}>
+              Edit
+            </Button>}
           </ButtonGroup>
+          <h3>Total Amount: {sum} cudos</h3>
           <form onSubmit={handleSubmit(onSubmit)}>
             {fields.map((item, index) => {
               return (
@@ -108,6 +159,7 @@ export function MultiSend() {
                     className="mx-3"
                     placeholder="Address"
                     {...register(`multiSend.${index}.address`)}
+                    disabled={isReadable}
                   />
                   <input
                     className="mx-3"
@@ -117,13 +169,13 @@ export function MultiSend() {
                       min: 0,
                       valueAsNumber: true,
                     })}
+                    disabled={isReadable}
                   />
                   <label>Cudos</label>
                 </div>
               );
             })}
             <input type="submit" />
-            <h3>Total Amount: {sum} cudos</h3>
           </form>
         </Col>
       </Row>

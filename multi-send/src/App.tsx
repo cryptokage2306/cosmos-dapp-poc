@@ -17,9 +17,6 @@ import {
 import { MultiSend } from "./pages/MultiSend";
 import { Send } from "./pages/Send";
 import "react-toastify/dist/ReactToastify.css";
-import { AllNFTsList } from "./pages/AllNFTsList";
-import { Cosmwasm } from "./pages/Cosmwasm";
-import { Write } from "./pages/Cosmwasm/Write";
 
 function App() {
   return (

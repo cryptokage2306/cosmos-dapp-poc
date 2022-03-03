@@ -33,11 +33,11 @@ export function MultiSend() {
           inputs: [
             {
               address: account,
-              coins: coins(sum * 10 ** 18, "acudos"),
+              coins: coins((sum * 10 ** 18).toString(), "acudos"),
             },
           ],
           outputs: multiSend.map((item) => ({
-            coins: coins(item.amount * 10 ** 18, "acudos"),
+            coins: coins((item.amount * 10 ** 18).toString(), "acudos"),
             address: item.address,
           })),
         },
@@ -70,7 +70,9 @@ export function MultiSend() {
         const targets: { address: string; amount: number }[] = [];
         obj.forEach((item) => {
           if (!item.address || !item.amount)
-            throw new Error("Address or amount is not present, please select different file");
+            throw new Error(
+              "Address or amount is not present, please select different file"
+            );
           targets.push({
             address: item.address,
             amount: item.amount,
@@ -92,7 +94,6 @@ export function MultiSend() {
     selectedFile.forEach((item) => append(item));
     setIsReadable(true);
   }, [selectedFile]);
-
 
   return (
     <>
@@ -126,30 +127,28 @@ export function MultiSend() {
           </div>
         </Col>
         <Col className="text-center m-auto" xs={12} md="6">
-          <input
-            type={"file"}
-            accept={".json"}
-            onChange={onChange}
-          />
-          <ButtonGroup>
-            <Button
-              color="primary"
-              disabled={isReadable}
-              onClick={() => append({ address: "", amount: 0 })}
-            >
-              +
-            </Button>
-            <Button
-              color="danger"
-              disabled={fields.length === 1 || isReadable}
-              onClick={() => remove(fields.length - 1)}
-            >
-              -
-            </Button>
-            {isReadable && <Button onClick={() => setIsReadable(false)}>
-              Edit
-            </Button>}
-          </ButtonGroup>
+          <div className="d-flex" style={{ justifyContent: "space-evenly" }}>
+            <input type={"file"} accept={".json"} onChange={onChange} />
+            <ButtonGroup>
+              <Button
+                color="primary"
+                disabled={isReadable}
+                onClick={() => append({ address: "", amount: 0 })}
+              >
+                +
+              </Button>
+              <Button
+                color="danger"
+                disabled={fields.length === 1 || isReadable}
+                onClick={() => remove(fields.length - 1)}
+              >
+                -
+              </Button>
+            </ButtonGroup>
+            {isReadable && (
+              <Button onClick={() => setIsReadable(false)}>Edit</Button>
+            )}
+          </div>
           <h3>Total Amount: {sum} cudos</h3>
           <form onSubmit={handleSubmit(onSubmit)}>
             {fields.map((item, index) => {
@@ -169,6 +168,7 @@ export function MultiSend() {
                       min: 0,
                       valueAsNumber: true,
                     })}
+                    step={0.00001}
                     disabled={isReadable}
                   />
                   <label>Cudos</label>

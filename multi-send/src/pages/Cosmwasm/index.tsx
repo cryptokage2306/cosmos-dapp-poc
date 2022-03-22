@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useKeplr } from "../../useKeplr";
 import { QueryMsg } from "./schema/query_msg";
 import JSONForm from "@rjsf/core";
 import query_msg from "./schema/query_msg_nft.json";
-import { CONTRACT_ADDRESS } from "../../constant/config";
+import { CONTRACT_ADDRESS } from "../../constant";
 
 export const Cosmwasm = () => {
   const { cosmwasmProvider, account } = useKeplr();

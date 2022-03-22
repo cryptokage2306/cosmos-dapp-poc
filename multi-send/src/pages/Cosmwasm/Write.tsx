@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useKeplr } from "../../useKeplr";
-import { QueryMsg } from "./schema/query_msg";
 import JSONForm from "@rjsf/core";
 import execute_msg from "./schema/execute_msg.json";
 import { calculateFee } from "@cosmjs/stargate";
 
-import { CONTRACT_ADDRESS } from "../../constant/config";
+import { CONTRACT_ADDRESS } from "../../constant";
 
 export const Write = () => {
   const { cosmwasmProvider, account } = useKeplr();
@@ -25,14 +24,6 @@ export const Write = () => {
       };
     });
   }, []);
-  // const d = useMemo(() => {
-  //   return anyOf.map((item) => {
-  //     const { properties } = item;
-  //     return {
-  //       properties,
-  //     };
-  //   });
-  // }, []);
   useEffect(() => {
     if (!cosmwasmProvider || !account) return;
   }, [cosmwasmProvider, account]);

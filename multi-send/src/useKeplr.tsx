@@ -3,6 +3,7 @@ import { SigningStargateClient, QueryClient } from "@cosmjs/stargate";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
 import { toast } from "react-toastify";
+import { CHAIN_ID, NAME, RPC_URL } from "./constant";
 
 declare global {
   interface Window {
@@ -21,7 +22,7 @@ export const useKeplr = () => {
 
   const connectWallet = async () => {
     try {
-      const chainId = "cudos-testnet-public-2";
+      const chainId = CHAIN_ID;
       // Keplr extension injects the offline signer that is compatible with cosmJS.
       // You can get this offline signer from `window.getOfflineSigner(chainId:string)` after load event.
       // And it also injects the helper function to `window.keplr`.
@@ -31,9 +32,9 @@ export const useKeplr = () => {
       } else {
         if (window?.keplr?.experimentalSuggestChain) {
           await window.keplr.experimentalSuggestChain({
-            rpc: "https://sentry1.gcp-uscentral1.cudos.org:26657",
+            rpc: RPC_URL,
             rest: "http://35.232.27.92:1317",
-            chainName: "CudosTestnet-Public",
+            chainName: NAME,
             chainId,
             currencies: [
               {
@@ -90,26 +91,16 @@ export const useKeplr = () => {
       const clonedacc = [...accounts];
       setAccount(clonedacc[0].address);
       setProvider(
-        await SigningStargateClient.connectWithSigner(
-          "https://sentry1.gcp-uscentral1.cudos.org:26657",
-          offlineSigner,
-          {
-            prefix: "cudos",
-          }
-        )
+        await SigningStargateClient.connectWithSigner(RPC_URL, offlineSigner, {
+          prefix: "cudos",
+        })
       );
       setCosmwasmProvider(
-        await SigningCosmWasmClient.connectWithSigner(
-          "https://sentry1.gcp-uscentral1.cudos.org:26657",
-          offlineSigner,
-          {
-            prefix: "cudos",
-          }
-        )
+        await SigningCosmWasmClient.connectWithSigner(RPC_URL, offlineSigner, {
+          prefix: "cudos",
+        })
       );
-      const tm = await Tendermint34Client.connect(
-        "https://sentry1.gcp-uscentral1.cudos.org:26657"
-      );
+      const tm = await Tendermint34Client.connect(RPC_URL);
       setQueryClient(new QueryClient(tm));
     } catch (err) {
       toast.error(err?.message, {

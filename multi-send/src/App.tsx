@@ -5,10 +5,14 @@ import { Routes, Route } from "react-router-dom";
 import { Header } from "./components/Header";
 import { ToastContainer } from "react-toastify";
 import {
+  ALL_NFT_PAGE,
+  MULTI_SEND,
   MULTI_SEND_BASE_PAGE,
   NFT_BASE_PAGE,
+  NFT_BINDING,
   NFT_WRITE_PAGE,
   SEND_BASE_PAGE,
+  SHOW_ALL_NFT,
 } from "./constant";
 import { MultiSend } from "./pages/MultiSend";
 import { Send } from "./pages/Send";
@@ -23,10 +27,16 @@ function App() {
       <Header />
       <div className="p-3">
         <Routes>
-          {/* <Route path={MULTI_SEND_BASE_PAGE} element={<MultiSend />} />
-          <Route path={SEND_BASE_PAGE} element={<Send />} /> */}
-          <Route path={NFT_BASE_PAGE} element={<Cosmwasm />} />
-          <Route path={NFT_WRITE_PAGE} element={<Write />} />
+          {MULTI_SEND && (
+            <Route path={MULTI_SEND_BASE_PAGE} element={<MultiSend />} />
+          )}
+          {MULTI_SEND && <Route path={SEND_BASE_PAGE} element={<Send />} />}
+          {NFT_BINDING && <Route path={NFT_BASE_PAGE} element={<Cosmwasm />} />}
+          {NFT_BINDING && <Route path={NFT_WRITE_PAGE} element={<Write />} />}
+
+          {SHOW_ALL_NFT && (
+            <Route path={ALL_NFT_PAGE} element={<AllNFTsList />} />
+          )}
         </Routes>
       </div>
       <div className="footer">

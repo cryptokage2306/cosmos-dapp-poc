@@ -12,11 +12,15 @@ import {
   Label,
 } from "reactstrap";
 import {
+  ALL_NFT_PAGE,
   HOME_PAGE,
+  MULTI_SEND,
   MULTI_SEND_BASE_PAGE,
   NFT_BASE_PAGE,
+  NFT_BINDING,
   NFT_WRITE_PAGE,
   SEND_BASE_PAGE,
+  SHOW_ALL_NFT,
 } from "../../constant";
 
 import { useKeplr } from "../../useKeplr";
@@ -45,44 +49,66 @@ export const Header = () => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="m-auto" navbar>
-            {/* <NavItem>
-              <Button
-                color="transparent"
-                tag={NavLink}
-                onClick={() => navigate(MULTI_SEND_BASE_PAGE)}
-              >
-                MultiSend
-              </Button>
-            </NavItem>
-            <NavItem>
-              <Button
-                color="transparent"
-                tag={NavLink}
-                onClick={() => navigate(SEND_BASE_PAGE)}
-              >
-                Send
-              </Button>
-            </NavItem> */}
+            {MULTI_SEND && (
+              <>
+                <NavItem>
+                  <Button
+                    color="transparent"
+                    tag={NavLink}
+                    onClick={() => navigate(MULTI_SEND_BASE_PAGE)}
+                  >
+                    MultiSend
+                  </Button>
+                </NavItem>
+                <NavItem>
+                  <Button
+                    color="transparent"
+                    tag={NavLink}
+                    onClick={() => navigate(SEND_BASE_PAGE)}
+                  >
+                    Send
+                  </Button>
+                </NavItem>
+              </>
+            )}
 
-            <NavItem>
-              <Button
-                color="transparent"
-                tag={NavLink}
-                onClick={() => navigate(NFT_BASE_PAGE)}
-              >
-                NFTs Read
-              </Button>
-              {/* <NavLink href={NFT_BASE_PAGE}>NFTs Read</NavLink> */}
-            </NavItem>
-            <NavItem>
-              <Button
-                color="transparent"
-                tag={NavLink}
-                onClick={() => navigate(NFT_WRITE_PAGE)}
-              >
-                NFT Write
-              </Button>
-            </NavItem>
+            {NFT_BINDING && (
+              <>
+                <NavItem>
+                  <Button
+                    color="transparent"
+                    tag={NavLink}
+                    onClick={() => navigate(NFT_BASE_PAGE)}
+                  >
+                    NFTs Read
+                  </Button>
+                  {/* <NavLink href={NFT_BASE_PAGE}>NFTs Read</NavLink> */}
+                </NavItem>
+                <NavItem>
+                  <Button
+                    color="transparent"
+                    tag={NavLink}
+                    onClick={() => navigate(NFT_WRITE_PAGE)}
+                  >
+                    NFT Write
+                  </Button>
+                </NavItem>
+              </>
+            )}
+
+            {SHOW_ALL_NFT && (
+              <>
+                <NavItem>
+                  <Button
+                    color="transparent"
+                    tag={NavLink}
+                    onClick={() => navigate(ALL_NFT_PAGE)}
+                  >
+                    All NFT
+                  </Button>
+                </NavItem>
+              </>
+            )}
           </Nav>
         </Collapse>
         <Label className="mx-3">

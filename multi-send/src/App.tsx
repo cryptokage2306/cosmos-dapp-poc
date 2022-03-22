@@ -15,6 +15,10 @@ import {
   SHOW_ALL_NFT,
 } from "./constant";
 import { MultiSend } from "./pages/MultiSend";
+import { Cosmwasm } from "./pages/Cosmwasm";
+import { Write } from "./pages/Cosmwasm/Write";
+import { AllNFTsList } from "./pages/AllNFTsList";
+
 import { Send } from "./pages/Send";
 import "react-toastify/dist/ReactToastify.css";
 

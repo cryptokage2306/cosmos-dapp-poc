@@ -1,0 +1,246 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExecuteMsg",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "issue_denom_msg"
+      ],
+      "properties": {
+        "issue_denom_msg": {
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "schema",
+            "symbol"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "schema": {
+              "type": "string"
+            },
+            "symbol": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "mint_nft_msg"
+      ],
+      "properties": {
+        "mint_nft_msg": {
+          "type": "object",
+          "required": [
+            "data",
+            "denom_id",
+            "name",
+            "recipient",
+            "uri"
+          ],
+          "properties": {
+            "data": {
+              "type": "string"
+            },
+            "denom_id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "recipient": {
+              "type": "string"
+            },
+            "uri": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "edit_nft_msg"
+      ],
+      "properties": {
+        "edit_nft_msg": {
+          "type": "object",
+          "required": [
+            "data",
+            "denom_id",
+            "name",
+            "token_id",
+            "uri"
+          ],
+          "properties": {
+            "data": {
+              "type": "string"
+            },
+            "denom_id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "token_id": {
+              "type": "string"
+            },
+            "uri": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "transfer_nft_msg"
+      ],
+      "properties": {
+        "transfer_nft_msg": {
+          "type": "object",
+          "required": [
+            "denom_id",
+            "from",
+            "to",
+            "token_id"
+          ],
+          "properties": {
+            "denom_id": {
+              "type": "string"
+            },
+            "from": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string"
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "burn_nft_msg"
+      ],
+      "properties": {
+        "burn_nft_msg": {
+          "type": "object",
+          "required": [
+            "denom_id",
+            "token_id"
+          ],
+          "properties": {
+            "denom_id": {
+              "type": "string"
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "approve_nft_msg"
+      ],
+      "properties": {
+        "approve_nft_msg": {
+          "type": "object",
+          "required": [
+            "approved_address",
+            "denom_id",
+            "token_id"
+          ],
+          "properties": {
+            "approved_address": {
+              "type": "string"
+            },
+            "denom_id": {
+              "type": "string"
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "approve_all_msg"
+      ],
+      "properties": {
+        "approve_all_msg": {
+          "type": "object",
+          "required": [
+            "approved",
+            "approved_operator"
+          ],
+          "properties": {
+            "approved": {
+              "type": "boolean"
+            },
+            "approved_operator": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "revoke_approval_msg"
+      ],
+      "properties": {
+        "revoke_approval_msg": {
+          "type": "object",
+          "required": [
+            "address_to_revoke",
+            "denom_id",
+            "token_id"
+          ],
+          "properties": {
+            "address_to_revoke": {
+              "type": "string"
+            },
+            "denom_id": {
+              "type": "string"
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

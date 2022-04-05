@@ -27,6 +27,11 @@ export const AllNFTsList = () => {
 
   const col = useMemo(
     () => [
+      {
+        accessor: (_: any, q: number) => q + 1,
+        id: "denom-id",
+        Header: "denom-id",
+      },
       { accessor: "id", Header: "Symbol" },
       { accessor: "name", Header: "Name" },
       { accessor: "creator", Header: "Creator" },

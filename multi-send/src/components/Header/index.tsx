@@ -21,6 +21,9 @@ import {
   NFT_WRITE_PAGE,
   SEND_BASE_PAGE,
   SHOW_ALL_NFT,
+  SHOW_ALL_NFT_TIC_TAC_INTERFACE,
+  TIC_TAC_BASE_PAGE,
+  TIC_TAC_WRITE_PAGE,
 } from "../../constant";
 
 import { useKeplr } from "../../useKeplr";
@@ -31,6 +34,7 @@ export const Header = () => {
   const [balance, setBalance] = useState<any>();
   const getBalance = async () => {
     const bal = await provider?.getBalance(account, "acudos");
+    console.log(bal);
     setBalance(bal?.amount / 10 ** 18);
   };
 
@@ -105,6 +109,28 @@ export const Header = () => {
                     onClick={() => navigate(ALL_NFT_PAGE)}
                   >
                     All NFT
+                  </Button>
+                </NavItem>
+              </>
+            )}
+            {SHOW_ALL_NFT_TIC_TAC_INTERFACE && (
+              <>
+                <NavItem>
+                  <Button
+                    color="transparent"
+                    tag={NavLink}
+                    onClick={() => navigate(TIC_TAC_BASE_PAGE)}
+                  >
+                    Tic Tac Read
+                  </Button>
+                </NavItem>
+                <NavItem>
+                  <Button
+                    color="transparent"
+                    tag={NavLink}
+                    onClick={() => navigate(TIC_TAC_WRITE_PAGE)}
+                  >
+                    Tic Tac Write
                   </Button>
                 </NavItem>
               </>

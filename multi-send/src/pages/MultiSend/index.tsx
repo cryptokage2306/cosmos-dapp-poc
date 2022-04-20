@@ -45,7 +45,8 @@ export function MultiSend() {
       const tx = await provider?.signAndBroadcast(
         account,
         [msg],
-        calculateFee(160000, "0.01acudos")
+        "auto",
+        "multisendd dapp"
       );
       console.log(tx);
       toast.success(tx?.transactionHash, {

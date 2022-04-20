@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { SigningStargateClient, QueryClient } from "@cosmjs/stargate";
+import { SigningStargateClient, QueryClient, GasPrice } from "@cosmjs/stargate";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import { Decimal } from "@cosmjs/math";
 import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
 import { toast } from "react-toastify";
-import { CHAIN_ID, NAME, RPC_URL } from "./constant";
+import { CHAIN_ID, GAS_PRICE, NAME, RPC_URL } from "./constant";
 
 declare global {
   interface Window {
@@ -93,11 +94,13 @@ export const useKeplr = () => {
       setProvider(
         await SigningStargateClient.connectWithSigner(RPC_URL, offlineSigner, {
           prefix: "cudos",
+          gasPrice: GasPrice.fromString(GAS_PRICE),
         })
       );
       setCosmwasmProvider(
         await SigningCosmWasmClient.connectWithSigner(RPC_URL, offlineSigner, {
           prefix: "cudos",
+          gasPrice: GasPrice.fromString(GAS_PRICE),
         })
       );
       const tm = await Tendermint34Client.connect(RPC_URL);

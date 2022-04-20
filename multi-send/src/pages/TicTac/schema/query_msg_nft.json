@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "QueryMsg",
+  "anyOf": [
+    {
+      "type": "object",
+      "required": [
+        "get_count"
+      ],
+      "properties": {
+        "get_count": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_winner"
+      ],
+      "properties": {
+        "get_winner": {
+          "type": "object",
+          "required": [
+            "game_id"
+          ],
+          "properties": {
+            "game_id": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "query_game"
+      ],
+      "properties": {
+        "query_game": {
+          "type": "object",
+          "required": [
+            "game_id"
+          ],
+          "properties": {
+            "game_id": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "find_winner_using_board"
+      ],
+      "properties": {
+        "find_winner_using_board": {
+          "type": "object",
+          "required": [
+            "game"
+          ],
+          "properties": {
+            "game": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "maxItems": 3,
+                "minItems": 3
+              },
+              "maxItems": 3,
+              "minItems": 3
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

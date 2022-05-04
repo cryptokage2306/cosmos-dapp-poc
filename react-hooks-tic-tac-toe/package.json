@@ -7,12 +7,14 @@
     "gh-pages": "^2.0.1"
   },
   "dependencies": {
+    "@cosmjs/cosmwasm-stargate": "^0.27.1",
     "bootstrap": "^4.3.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
-    "@cosmjs/cosmwasm-stargate": "^0.27.1"
+    "react-table": "^7.7.0",
+    "reactstrap": "^9.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

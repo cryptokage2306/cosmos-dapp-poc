@@ -7,19 +7,31 @@ import * as serviceWorker from "./serviceWorker";
 import { Route, BrowserRouter, Switch } from "react-router-dom";
 import { Main } from "./Main";
 import { JoinGame } from "./JoinGame";
+import { ViewGame } from "./ViewGame";
+import { CREATE_GAME, GAME_BASE, GAME_SCREEN, JOIN_GAME_BY_ID, JOIN_GAME } from "./constant";
+import { Header } from "./components/Header";
 ReactDOM.render(
   <BrowserRouter>
-    <Switch>
-      <Route exact path="/">
-        <Main />
-      </Route>
-      <Route exact path="/join-game">
-        <JoinGame />
-      </Route>
-      <Route exact path="/game/:id">
-        <Game />
-      </Route>
-    </Switch>
+    <div>
+      <Header />
+      <Switch>
+        <Route exact path={CREATE_GAME}>
+          <Main />
+        </Route>
+        <Route exact path={JOIN_GAME}>
+          <JoinGame />
+        </Route>
+        <Route exact path={JOIN_GAME_BY_ID}>
+          <JoinGame />
+        </Route>
+        <Route exact path={GAME_BASE}>
+          <ViewGame />
+        </Route>
+        <Route exact path={GAME_SCREEN}>
+          <Game />
+        </Route>
+      </Switch>
+    </div>
   </BrowserRouter>,
   document.getElementById("root")
 );

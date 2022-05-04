@@ -28,6 +28,7 @@ export const ViewGame = () => {
           <InputGroup>
             <Input
               type="number"
+              min={0}
               autoComplete="off"
               autoCorrect="off"
               placeholder="0"
@@ -36,8 +37,12 @@ export const ViewGame = () => {
               spellCheck="false"
               onChange={(e) => setGameId(e.target.value)}
             />
-            <Button color="primary" onClick={() => checkGame()}>View Game</Button>
           </InputGroup>
+          <div className="text-center mt-3">
+            <Button color="primary" onClick={() => checkGame()}>
+              View Game
+            </Button>
+          </div>
         </Col>
         <Col xs="12" className="text-center">
           {isLoading && "Loading Game...."}

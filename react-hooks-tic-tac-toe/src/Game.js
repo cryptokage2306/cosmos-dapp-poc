@@ -2,17 +2,25 @@ import React, { useState, useRef, useEffect } from "react";
 import Board from "./components/Board";
 import "./App.css";
 import { useKeplr } from "./useKeplr";
-import { CONTRACT_ADDRESS, JOIN_GAME } from "./constant";
+import {
+  CONTRACT_ADDRESS,
+  HOME_PAGE,
+  JOIN_GAME,
+  POLLING_INTERVAL,
+  TEST_ID,
+} from "./constant";
 import { Button, NavLink } from "reactstrap";
-import { useHistory, Redirect, useRouteMatch } from "react-router-dom";
+import { Redirect, useRouteMatch } from "react-router-dom";
 import useInterval from "./hooks/useInterval";
 import { GameInfoTable } from "./components/GameInfoTable";
+import Table from "./components/Table";
 
-const TEST_ID = /^[0-9]{6,10}?$/;
 function Game() {
   const { account, cosmwasmProvider, fetchGame, fetchGameWinner } = useKeplr();
   const [gameData, setGameData] = useState();
   const [winner, setWinner] = useState();
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const resolveWinner = () => {
     if (!winner || !gameData) return "";
     if (winner == "Nought") {
@@ -29,8 +37,9 @@ function Game() {
   const {
     params: { id },
   } = useRouteMatch();
+
   if (!id || !TEST_ID.test(id)) {
-    return <Redirect to={"/"} exact />;
+    return <Redirect to={HOME_PAGE} exact />;
   }
 
   const handleWinner = async () => {
@@ -51,8 +60,11 @@ function Game() {
     const data = await fetchGame(id);
     setGameData(data);
   };
-  console.log(gameData);
-  useInterval(realTime, !!gameData ? 10 * 1000 : null);
+
+  useInterval(
+    realTime,
+    !!gameData && !gameData.is_completed ? POLLING_INTERVAL * 1000 : null
+  );
   //----------------------------------------- useState ---------------------------------------------------
   //---------------------------------------- style useRef -------------------------------------------------
   const gameScreenEl = useRef(null);
@@ -70,44 +82,59 @@ function Game() {
   }, []);
 
   const handleClick = async (i, j) => {
-    if (!gameData) return;
+    setError("");
+    setIsLoading(true);
+    try {
+      if (!gameData) return;
 
-    const msg = {
-      update_game: {
-        game_id: id,
-        i,
-        j,
-        side: gameData.next_move,
-      },
-    };
-    const tx = await cosmwasmProvider.execute(
-      account,
-      CONTRACT_ADDRESS,
-      msg,
-      "auto",
-      `Update a game for ${account} with id ${id} with i=${i} and j=${j}`,
-      []
-    );
-    await realTime();
+      const msg = {
+        update_game: {
+          game_id: id,
+          i,
+          j,
+          side: gameData.next_move,
+        },
+      };
+      const tx = await cosmwasmProvider.execute(
+        account,
+        CONTRACT_ADDRESS,
+        msg,
+        "auto",
+        `Update a game for ${account} with id ${id} with i=${i} and j=${j}`,
+        []
+      );
+      console.log(tx.transactionHash);
+      await realTime();
+      setIsLoading(false);
+    } catch (err) {
+      setError((err && err.message) || "Unknown Error Occurred");
+      setIsLoading(false);
+    }
   };
 
   const withdrawWinning = async () => {
-    if (!gameData) return;
-
-    const msg = {
-      withdraw_bet: {
-        game_id: id,
-      },
-    };
-    const tx = await cosmwasmProvider.execute(
-      account,
-      CONTRACT_ADDRESS,
-      msg,
-      "auto",
-      `Withdraw a Bet`,
-      []
-    );
-    console.log(tx);
+    setError("");
+    setIsLoading(true);
+    try {
+      const msg = {
+        withdraw_bet: {
+          game_id: id,
+        },
+      };
+      const tx = await cosmwasmProvider.execute(
+        account,
+        CONTRACT_ADDRESS,
+        msg,
+        "auto",
+        `Withdraw a Bet`,
+        []
+      );
+      console.log(tx);
+      setIsLoading(false);
+    } catch (err) {
+      setError((err && err.message) || "Unknown Error Occurred");
+      setIsLoading(false);
+    }
   };
 
   const winnerValue = resolveWinner();
@@ -128,6 +155,11 @@ function Game() {
       <div className="mt-5">
         <GameInfoTable data={gameData || {}} />
       </div>
+      <div className="text-center">
+        {isLoading && "Loading..."}
+        {!!error && error}
+      </div>
+
       <div className="row">
         <div className="col-12">
           <div

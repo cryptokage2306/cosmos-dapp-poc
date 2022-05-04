@@ -3,7 +3,15 @@ import { CONTRACT_ADDRESS, GAME_BASE } from "./constant";
 import { useKeplr } from "./useKeplr";
 import { coin } from "@cosmjs/stargate";
 import { useHistory } from "react-router-dom";
-import { Button, Col, Input, InputGroup, Row } from "reactstrap";
+import {
+  Button,
+  Col,
+  Input,
+  InputGroup,
+  InputGroupText,
+  Row,
+} from "reactstrap";
+import { convertCudosToACudos } from "./utils";
 const ETHEREUM_MAX_AMOUNT = /^\d*\.?\d*$/;
 
 export const Main = () => {
@@ -14,16 +22,17 @@ export const Main = () => {
   const [bet, setBet] = useState("");
   //   execute(senderAddress: string, contractAddress: string, msg: Record<string, unknown>, fee: StdFee | "auto" | number, memo?: string, funds?: readonly Coin[])
   const createGame = async () => {
+    setError("");
+    setIsLoading(true);
     try {
       if (!cosmwasmProvider)
         throw new Error("Wallet is not present or connected");
-      const val = coin(bet, "acudos");
+      const val = coin(convertCudosToACudos(bet), "acudos");
       const msg = {
         create_game: {
           bet: val,
         },
       };
-      setIsLoading(true);
       const tx = await cosmwasmProvider.execute(
         account,
         CONTRACT_ADDRESS,
@@ -45,10 +54,11 @@ export const Main = () => {
       e.preventDefault();
     }
   };
+
   return (
     <>
       <Row className="justify-content-center">
-        <Col xs="6">
+        <Col xs="6" className="">
           <InputGroup>
             <Input
               inputMode="decimal"
@@ -62,13 +72,20 @@ export const Main = () => {
               onKeyPress={onKeyPressHandler}
               onChange={(e) => setBet(e.target.value)}
             />
-            <Button color="primary" onClick={() => createGame()}>Create Game</Button>
+            <InputGroupText>CUDOS</InputGroupText>
           </InputGroup>
+          <div className="text-center mt-3">
+            <Button color="success" onClick={() => createGame()}>
+              Create Game
+            </Button>
+          </div>
         </Col>
         <Col xs="12" className="text-center">
           {isLoading && "Creating Game...."}
         </Col>
-        <Col xs="12" className="text-center">{!!error && error}</Col>
+        <Col xs="12" className="text-center">
+          {!!error && error}
+        </Col>
       </Row>
     </>
   );

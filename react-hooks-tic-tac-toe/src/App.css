@@ -1,3 +1,4 @@
+
 .game-container {
     height: 100vh;
 }
@@ -60,61 +61,6 @@
 
 .square[data-pro="O"] {
     color: #264653;
-}
-
-/*-------------------------------------------game__history-section style------------------------------------------------*/
-
-.game__history-section {
-    margin-top: 40px;
-    padding: 10px;
-    display: flex;
-    background: #08092650;
-    width: 100%;
-    max-width: 150px;
-    flex-direction: column;
-}
-
-
-.sorting-btn-wrapper {
-    text-align: right;
-    max-width: 150px;
-    margin-bottom: 10px;
-}
-
-.sorting-btn__text {
-    margin-right: 10px;
-}
-
-.sorting-btn__icon {
-    width: 24px;
-}
-
-
-.history-btn {
-    color: white;
-    border: 1px solid rgb(186, 186, 186);
-    background: transparent;
-    display: block;
-
-}
-
-.history-btn:not(:last-child) {
-    margin-bottom: 10px
-}
-
-.history-btn:focus,
-.history-btn:active {
-    outline: none;
-}
-
-.history-btn--selected {
-    font-weight: bold;
-    border: 3px solid rgb(255, 255, 255);
-}
-
-
-.cursor--pointer {
-    cursor: pointer;
 }
 
 @keyframes zoomHighlight {

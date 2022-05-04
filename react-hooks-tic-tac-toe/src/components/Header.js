@@ -11,9 +11,17 @@ import {
   Button,
   Label,
 } from "reactstrap";
-import { CREATE_GAME, JOIN_GAME, GAME_BASE, HOME_PAGE } from "../constant";
+import {
+  CREATE_GAME,
+  JOIN_GAME,
+  GAME_BASE,
+  HOME_PAGE,
+  POLLING_INTERVAL,
+} from "../constant";
+import useInterval from "../hooks/useInterval";
 
 import { useKeplr } from "../useKeplr";
+import { convertAcudosToCudos } from "../utils";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,18 +29,18 @@ export const Header = () => {
   const [balance, setBalance] = useState();
   const getBalance = async () => {
     const bal = await provider.getBalance(account, "acudos");
-    setBalance(bal.amount / 10 ** 18);
+    setBalance(convertAcudosToCudos(bal.amount));
   };
 
   const history = useHistory();
-
-  console.log(account, provider);
 
   const toggle = () => setIsOpen(!isOpen);
   useEffect(() => {
     if (!account || !provider) return;
     getBalance();
   }, [account, provider]);
+
+  useInterval(getBalance, !!balance ? POLLING_INTERVAL * 1000 : null);
 
   return (
     <div className="mb-3">
@@ -47,7 +55,7 @@ export const Header = () => {
                 tag={NavLink}
                 onClick={() => history.push(CREATE_GAME)}
               >
-                Home
+                Create Game
               </Button>
             </NavItem>
             <NavItem>
@@ -65,14 +73,12 @@ export const Header = () => {
                 tag={NavLink}
                 onClick={() => history.push(GAME_BASE)}
               >
-                Game
+                View Game
               </Button>
             </NavItem>
           </Nav>
         </Collapse>
-        <Label className="mx-3">
-          {balance > 0 ? balance + "cudos" : null}
-        </Label>
+        <Label className="mx-3">{balance > 0 ? balance + "cudos" : null}</Label>
         <Button
           color="primary"
           className="truncate"

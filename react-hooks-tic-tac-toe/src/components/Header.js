@@ -17,6 +17,7 @@ import {
   GAME_BASE,
   HOME_PAGE,
   POLLING_INTERVAL,
+  GAME_PENDING,
 } from "../constant";
 import useInterval from "../hooks/useInterval";
 

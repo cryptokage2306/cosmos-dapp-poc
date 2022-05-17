@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { InputGroup, Input, Button, Row, Col } from "reactstrap";
+import { AllGames } from "./AllGames";
 import { GAME_BASE } from "./constant";
 import { useKeplr } from "./useKeplr";
 
@@ -35,6 +36,7 @@ export const ViewGame = () => {
               minLength={1}
               maxLength={79}
               spellCheck="false"
+              value={gameId}
               onChange={(e) => setGameId(e.target.value)}
             />
           </InputGroup>
@@ -50,6 +52,11 @@ export const ViewGame = () => {
         <Col xs="12" className="text-center">
           {!!error && error}
         </Col>
+        <Col xs="3" />
+        <Col xs="6" className="mt-4">
+          <AllGames onClick={setGameId} />
+        </Col>
+        <Col xs="3" />
       </Row>
     </>
   );

@@ -13,7 +13,6 @@ import { Button, NavLink } from "reactstrap";
 import { Redirect, useRouteMatch } from "react-router-dom";
 import useInterval from "./hooks/useInterval";
 import { GameInfoTable } from "./components/GameInfoTable";
-import Table from "./components/Table";
 
 function Game() {
   const { account, cosmwasmProvider, fetchGame, fetchGameWinner } = useKeplr();
@@ -137,6 +136,31 @@ function Game() {
     }
   };
 
+  const handleCancel = async () => {
+    setError("");
+    setIsLoading(true);
+    try {
+      const msg = {
+        cancel_game: {
+          game_id: id,
+        },
+      };
+      const tx = await cosmwasmProvider.execute(
+        account,
+        CONTRACT_ADDRESS,
+        msg,
+        "auto",
+        `Cancel`,
+        []
+      );
+      console.log(tx);
+      setIsLoading(false);
+    } catch (err) {
+      setError((err && err.message) || "Unknown Error Occurred");
+      setIsLoading(false);
+    }
+  };
+
   const winnerValue = resolveWinner();
 
   const centerGameScreen =
@@ -144,12 +168,26 @@ function Game() {
   return (
     <div ref={gameContainerEl} className="container game-container">
       {!!gameData && gameData.is_pending && (
-        <div className="d-flex">
-          Currently game is not joined by anyone. Please click{" "}
-          <NavLink active href={`${JOIN_GAME}/${id}`} className="py-0 px-1">
-            here
-          </NavLink>{" "}
-          to join the game
+        <div>
+          {gameData.is_completed ? (
+            <div className="d-flex">Game is cancelled by the creator</div>
+          ) : (
+            <div className="d-flex">
+              Currently game is not joined by anyone. Please click{" "}
+              <NavLink active href={`${JOIN_GAME}/${id}`} className="py-0 px-1">
+                here
+              </NavLink>{" "}
+              to join the game
+            </div>
+          )}
+
+          {!gameData.is_completed && gameData.cross === account && (
+            <div>
+              <Button color="danger" onClick={handleCancel}>
+                Cancel
+              </Button>
+            </div>
+          )}
         </div>
       )}
       <div className="mt-5">

@@ -27,6 +27,7 @@ export const Main = () => {
     try {
       if (!cosmwasmProvider)
         throw new Error("Wallet is not present or connected");
+      if (bet < 10) throw new Error("Minimum Bet is 10CUDOS");
       const val = coin(convertCudosToACudos(bet), "acudos");
       const msg = {
         create_game: {

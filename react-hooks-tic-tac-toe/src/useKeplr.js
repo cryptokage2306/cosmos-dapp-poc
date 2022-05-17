@@ -143,6 +143,30 @@ export const useKeplr = () => {
     },
     [cosmwasmProvider]
   );
+
+  const fetchPendingGames = useCallback(async () => {
+    if (!cosmwasmProvider) return;
+    const msg = {
+      pending_games: {},
+    };
+    const data = await cosmwasmProvider.queryContractSmart(
+      CONTRACT_ADDRESS,
+      msg
+    );
+    return data;
+  }, [cosmwasmProvider]);
+
+  const fetchAllGames = useCallback(async () => {
+    if (!cosmwasmProvider) return;
+    const msg = {
+      all_games: {},
+    };
+    const data = await cosmwasmProvider.queryContractSmart(
+      CONTRACT_ADDRESS,
+      msg
+    );
+    return data;
+  }, [cosmwasmProvider]);
   return {
     account,
     connectWallet,
@@ -150,6 +174,8 @@ export const useKeplr = () => {
     cosmwasmProvider,
     fetchGame,
     fetchGameWinner,
-    provider
+    provider,
+    fetchPendingGames,
+    fetchAllGames
   };
 };

@@ -8,7 +8,13 @@ import { Route, BrowserRouter, Switch } from "react-router-dom";
 import { Main } from "./Main";
 import { JoinGame } from "./JoinGame";
 import { ViewGame } from "./ViewGame";
-import { CREATE_GAME, GAME_BASE, GAME_SCREEN, JOIN_GAME_BY_ID, JOIN_GAME } from "./constant";
+import {
+  CREATE_GAME,
+  GAME_BASE,
+  GAME_SCREEN,
+  JOIN_GAME_BY_ID,
+  JOIN_GAME,
+} from "./constant";
 import { Header } from "./components/Header";
 ReactDOM.render(
   <BrowserRouter>

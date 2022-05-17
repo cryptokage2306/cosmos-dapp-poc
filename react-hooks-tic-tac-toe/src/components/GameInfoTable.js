@@ -7,10 +7,10 @@ export const GameInfoTable = ({ data }) => {
   const col = useMemo(
     () => [
       {
-        accessor: "nought",
-        Header: "Nought",
+        accessor: "cross",
+        Header: "Cross",
       },
-      { accessor: "zero", Header: "Zero" },
+      { accessor: "nought", Header: "Zero" },
       {
         accessor: "bet",
         Header: "Bet Amount",

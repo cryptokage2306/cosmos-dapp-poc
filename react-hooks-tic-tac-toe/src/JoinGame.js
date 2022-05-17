@@ -4,6 +4,7 @@ import { useKeplr } from "./useKeplr";
 import { useHistory, useRouteMatch, Redirect } from "react-router-dom";
 import { Button, Input, InputGroup, Row, Col } from "reactstrap";
 import { convertAcudosToCudos } from "./utils";
+import { PendingGames } from "./PendingGames";
 
 export const JoinGame = () => {
   const { account, cosmwasmProvider, fetchGame } = useKeplr();
@@ -17,6 +18,7 @@ export const JoinGame = () => {
   if (idByParams && !TEST_ID.test(idByParams)) {
     return <Redirect to={HOME_PAGE} exact />;
   }
+
   //   queryContractSmart(address: string, queryMsg: Record<string, unknown>): Promise<JsonObject>;
   const history = useHistory();
   const fetchBet = async () => {
@@ -60,13 +62,12 @@ export const JoinGame = () => {
     }
   };
   const handleBetWithConnectWallet = async () => {
-    setId(idByParams);
+    idByParams && setId(idByParams);
     await fetchBet();
   };
   useEffect(() => {
-    if (!idByParams) return;
-    handleBetWithConnectWallet();
-  }, [idByParams, cosmwasmProvider]);
+    if (idByParams || id) handleBetWithConnectWallet();
+  }, [idByParams, id, cosmwasmProvider]);
   return (
     <>
       <Row className="justify-content-center">
@@ -87,16 +88,15 @@ export const JoinGame = () => {
             />
           </InputGroup>
           <div className="text-center mt-3">
-          {!!bet ? (
-            <Button color="primary" onClick={() => joinGame()}>
-              Join Bet
-            </Button>
-          ) : (
-            <Button color="primary" onClick={() => fetchBet()}>
-              Fetch Bet
-            </Button>
-          )}
-
+            {!!bet ? (
+              <Button color="primary" onClick={() => joinGame()}>
+                Join Bet
+              </Button>
+            ) : (
+              <Button color="primary" onClick={() => fetchBet()}>
+                Fetch Bet
+              </Button>
+            )}
           </div>
         </Col>
         <Col xs="12" className="text-center">
@@ -111,6 +111,12 @@ export const JoinGame = () => {
         <Col xs="12" className="text-center">
           {!!error && error}
         </Col>
+
+        <Col xs="3" />
+        <Col xs="6" className="mt-4">
+          <PendingGames onClick={setId} />
+        </Col>
+        <Col xs="3" />
       </Row>
     </>
   );

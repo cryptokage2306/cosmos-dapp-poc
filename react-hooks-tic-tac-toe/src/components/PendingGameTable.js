@@ -1,21 +1,35 @@
 import React, { useMemo } from "react";
 import { Button, NavLink } from "reactstrap";
-import { JOIN_GAME } from "../constant/routes";
-import { useHistory } from "react-router-dom";
+import { convertAcudosToCudos } from "../utils";
 import Table from "./Table";
 
 export const PendingGameTable = ({ data, onClick }) => {
   const col = useMemo(
     () => [
       {
-        id: "game_id",
         Header: "Game Id",
-        type: "button",
-        accessor: (o) => (
-          <NavLink tag={Button} onClick={() => onClick(o)}>
-            {o}
-          </NavLink>
-        ),
+        accessor: "id",
+        Cell: ({ value }) => {
+          return (
+            <NavLink
+              tag={Button}
+              color="link"
+              className="p-0"
+              onClick={() => onClick(value)}
+            >
+              {value}
+            </NavLink>
+          );
+        },
+      },
+      {
+        Header: "X",
+        accessor: "cross",
+      },
+      {
+        accessor: "bet",
+        Header: "Bet Amount",
+        Cell: ({ value }) => `${convertAcudosToCudos(value.amount)}CUDOS`,
       },
     ],
     []

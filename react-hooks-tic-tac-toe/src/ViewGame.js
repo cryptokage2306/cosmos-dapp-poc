@@ -52,11 +52,9 @@ export const ViewGame = () => {
         <Col xs="12" className="text-center">
           {!!error && error}
         </Col>
-        <Col xs="3" />
-        <Col xs="6" className="mt-4">
+        <Col xs="12" className="mt-4">
           <AllGames onClick={setGameId} />
         </Col>
-        <Col xs="3" />
       </Row>
     </>
   );

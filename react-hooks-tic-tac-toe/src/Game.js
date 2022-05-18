@@ -22,10 +22,10 @@ function Game() {
   const [isLoading, setIsLoading] = useState(false);
   const resolveWinner = () => {
     if (!winner || !gameData) return "";
-    if (winner == "Nought") {
+    if (winner == "Cross") {
       return gameData.nought;
     }
-    if (winner == "Zero") {
+    if (winner == "Nought") {
       return gameData.zero;
     }
     if (winner == "Draw") {
@@ -234,11 +234,17 @@ function Game() {
             </div>
             <div className="text-right">
               {!!winnerValue && `Winner: ${winnerValue}`}
-              {!!winnerValue && !gameData.is_completed && (
-                <Button color="success" onClick={withdrawWinning}>
-                  Withdraw
-                </Button>
-              )}
+              {!!gameData && !gameData.is_completed && !!winnerValue ? (
+                winner === "Draw" ? (
+                  <Button color="success" onClick={withdrawWinning}>
+                    Withdraw Orginal Bet
+                  </Button>
+                ) : winnerValue === account ? (
+                  <Button color="success" onClick={withdrawWinning}>
+                    Withdraw Winnings
+                  </Button>
+                ) : null
+              ) : null}
             </div>
           </div>
         </div>

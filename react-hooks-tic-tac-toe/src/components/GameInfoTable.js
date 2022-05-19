@@ -3,7 +3,6 @@ import { convertAcudosToCudos } from "../utils";
 import Table from "./Table";
 
 export const GameInfoTable = ({ data }) => {
-  console.log(data);
   const col = useMemo(
     () => [
       {
@@ -15,7 +14,7 @@ export const GameInfoTable = ({ data }) => {
         accessor: "bet",
         Header: "Bet Amount",
         Cell: ({ value }) =>
-          !!value ? `${convertAcudosToCudos(value.amount)}${value.denom}` : "",
+          !!value ? `${convertAcudosToCudos(value.amount)}CUDOS` : "",
       },
       {
         accessor: "is_pending",

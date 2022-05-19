@@ -13,22 +13,23 @@ import { Button, NavLink } from "reactstrap";
 import { Redirect, useRouteMatch } from "react-router-dom";
 import useInterval from "./hooks/useInterval";
 import { GameInfoTable } from "./components/GameInfoTable";
+import { toast } from "react-toastify";
+import { convertAcudosToCudos } from "./utils";
 
 function Game() {
   const { account, cosmwasmProvider, fetchGame, fetchGameWinner } = useKeplr();
   const [gameData, setGameData] = useState();
   const [winner, setWinner] = useState();
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const resolveWinner = () => {
     if (!winner || !gameData) return "";
-    if (winner == "Cross") {
+    if (winner === "Cross") {
       return gameData.nought;
     }
-    if (winner == "Nought") {
+    if (winner === "Nought") {
       return gameData.zero;
     }
-    if (winner == "Draw") {
+    if (winner === "Draw") {
       return "Draw";
     }
     return "";
@@ -81,7 +82,6 @@ function Game() {
   }, []);
 
   const handleClick = async (i, j) => {
-    setError("");
     setIsLoading(true);
     try {
       if (!gameData) return;
@@ -102,17 +102,16 @@ function Game() {
         `Update a game for ${account} with id ${id} with i=${i} and j=${j}`,
         []
       );
-      console.log(tx.transactionHash);
+      toast.success(tx.transactionHash);
       await realTime();
       setIsLoading(false);
     } catch (err) {
-      setError((err && err.message) || "Unknown Error Occurred");
+      toast.error((err && err.message) || "Unknown Error Occurred");
       setIsLoading(false);
     }
   };
 
   const withdrawWinning = async () => {
-    setError("");
     setIsLoading(true);
     try {
       const msg = {
@@ -128,16 +127,15 @@ function Game() {
         `Withdraw a Bet`,
         []
       );
-      console.log(tx);
+      toast.success(tx.transactionHash);
       setIsLoading(false);
     } catch (err) {
-      setError((err && err.message) || "Unknown Error Occurred");
+      toast.error((err && err.message) || "Unknown Error Occurred");
       setIsLoading(false);
     }
   };
 
   const handleCancel = async () => {
-    setError("");
     setIsLoading(true);
     try {
       const msg = {
@@ -153,10 +151,10 @@ function Game() {
         `Cancel`,
         []
       );
-      console.log(tx);
+      toast.success(tx.transactionHash);
       setIsLoading(false);
     } catch (err) {
-      setError((err && err.message) || "Unknown Error Occurred");
+      toast.error((err && err.message) || "Unknown Error Occurred");
       setIsLoading(false);
     }
   };
@@ -193,10 +191,7 @@ function Game() {
       <div className="mt-5">
         <GameInfoTable data={gameData || {}} />
       </div>
-      <div className="text-center">
-        {isLoading && "Loading..."}
-        {!!error && error}
-      </div>
+      <div className="text-center">{isLoading && "Loading..."}</div>
 
       <div className="row">
         <div className="col-12">
@@ -220,8 +215,8 @@ function Game() {
                     <Board
                       squares={gameData.game}
                       nextMove={gameData.next_move}
+                      cross={gameData.cross}
                       nought={gameData.nought}
-                      zero={gameData.zero}
                       account={account}
                       isWinner={!!winnerValue}
                       onClick={(i, j) => {
@@ -232,19 +227,23 @@ function Game() {
                 )}
               </div>
             </div>
-            <div className="text-right">
-              {!!winnerValue && `Winner: ${winnerValue}`}
-              {!!gameData && !gameData.is_completed && !!winnerValue ? (
-                winner === "Draw" ? (
-                  <Button color="success" onClick={withdrawWinning}>
-                    Withdraw Orginal Bet
-                  </Button>
-                ) : winnerValue === account ? (
-                  <Button color="success" onClick={withdrawWinning}>
-                    Withdraw Winnings
-                  </Button>
-                ) : null
-              ) : null}
+            <div>
+              <div className="text-right">
+                {!!winnerValue && `Winner: ${winnerValue}`}
+                <div className="mt-2">
+                  {!!gameData && !gameData.is_completed && !!winnerValue ? (
+                    winner === "Draw" ? (
+                      <Button color="success" onClick={withdrawWinning}>
+                        Withdraw Orginal Bet {convertAcudosToCudos(gameData.bet.amount)}CUDOS
+                      </Button>
+                    ) : winnerValue === account ? (
+                      <Button color="success" onClick={withdrawWinning}>
+                        Withdraw Winnings {convertAcudosToCudos(gameData.bet.amount * 2)}CUDOS
+                      </Button>
+                    ) : null
+                  ) : null}
+                </div>
+              </div>
             </div>
           </div>
         </div>

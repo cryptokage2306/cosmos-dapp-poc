@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { InputGroup, Input, Button, Row, Col } from "reactstrap";
+import {toast} from 'react-toastify'
 import { AllGames } from "./AllGames";
 import { GAME_BASE } from "./constant";
 import { useKeplr } from "./useKeplr";
 
 export const ViewGame = () => {
   const [gameId, setGameId] = useState(0);
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { fetchGame } = useKeplr();
   const history = useHistory();
@@ -19,7 +19,7 @@ export const ViewGame = () => {
       history.push(`${GAME_BASE}/${gameId}`);
     } catch (err) {
       setIsLoading(false);
-      setError((err && err.message) || "Unknown Error Occurred");
+      toast.success((err && err.message) || "Unknown Error Occurred");
     }
   };
   return (
@@ -48,9 +48,6 @@ export const ViewGame = () => {
         </Col>
         <Col xs="12" className="text-center">
           {isLoading && "Loading Game...."}
-        </Col>
-        <Col xs="12" className="text-center">
-          {!!error && error}
         </Col>
         <Col xs="12" className="mt-4">
           <AllGames onClick={setGameId} />

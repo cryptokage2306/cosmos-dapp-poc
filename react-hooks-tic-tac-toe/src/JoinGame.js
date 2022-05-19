@@ -5,13 +5,13 @@ import { useHistory, useRouteMatch, Redirect } from "react-router-dom";
 import { Button, Input, InputGroup, Row, Col } from "reactstrap";
 import { convertAcudosToCudos } from "./utils";
 import { PendingGames } from "./PendingGames";
+import { toast } from "react-toastify";
 
 export const JoinGame = () => {
   const { account, cosmwasmProvider, fetchGame } = useKeplr();
   const [id, setId] = useState(0);
   const [bet, setBet] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const {
     params: { id: idByParams },
   } = useRouteMatch();
@@ -22,7 +22,6 @@ export const JoinGame = () => {
   //   queryContractSmart(address: string, queryMsg: Record<string, unknown>): Promise<JsonObject>;
   const history = useHistory();
   const fetchBet = async () => {
-    setError("");
     setIsLoading(true);
     try {
       if (!cosmwasmProvider) throw new Error("Wallet is not connected");
@@ -33,11 +32,10 @@ export const JoinGame = () => {
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      setError((err && err.message) || "Unknown Error Occurred");
+      toast.error((err && err.message) || "Unknown Error Occurred");
     }
   };
   const joinGame = async () => {
-    setError("");
     setIsLoading(true);
     try {
       if (!cosmwasmProvider) throw new Error("Wallet is not connected");
@@ -54,11 +52,11 @@ export const JoinGame = () => {
         `join a game for ${account} with id ${id} with bet ${bet.amount}${bet.denom}`,
         [bet]
       );
-      console.log(tx.transactionHash);
+      toast.success(tx.transactionHash);
       history.push(`${GAME_BASE}/${id}`);
     } catch (err) {
       setIsLoading(false);
-      setError((err && err.message) || "Unknown Error Occurred");
+      toast.error((err && err.message) || "Unknown Error Occurred");
     }
   };
   const handleBetWithConnectWallet = async () => {
@@ -108,10 +106,6 @@ export const JoinGame = () => {
         <Col xs="12" className="text-center">
           {isLoading && "Loading Game...."}
         </Col>
-        <Col xs="12" className="text-center">
-          {!!error && error}
-        </Col>
-
         <Col xs="3" />
         <Col xs="6" className="mt-4">
           <PendingGames onClick={setId} />

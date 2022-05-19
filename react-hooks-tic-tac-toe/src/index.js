@@ -16,6 +16,8 @@ import {
   JOIN_GAME,
 } from "./constant";
 import { Header } from "./components/Header";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 ReactDOM.render(
   <BrowserRouter>
     <div>
@@ -37,6 +39,7 @@ ReactDOM.render(
           <Game />
         </Route>
       </Switch>
+      <ToastContainer />
     </div>
   </BrowserRouter>,
   document.getElementById("root")

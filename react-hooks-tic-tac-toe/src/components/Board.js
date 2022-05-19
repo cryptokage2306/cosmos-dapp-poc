@@ -1,15 +1,35 @@
 import React from "react";
 import Square from "./Square";
+import { toast } from "react-toastify";
 
-export default ({ squares, onClick, nextMove, nought, zero, account, isWinner }) => {
+export default ({
+  squares,
+  onClick,
+  nextMove,
+  cross,
+  nought,
+  account,
+  isWinner,
+}) => {
   function renderSquare(val, i, j) {
     return (
       <Square
         className={`square`}
         key={i + j}
         value={val == null ? "" : val ? "X" : "0"}
-        onClick={() => onClick(i, j)}
-        isNotDisabled={nextMove ? nought == account : zero == account}
+        onClick={() => {
+          try {
+            if (nextMove) {
+              if (nought === account) throw new Error("This is Cross move");
+            } else {
+              if (cross === account) throw new Error("This is Zero move");
+            }
+
+            onClick(i, j);
+          } catch (err) {
+            toast.error(err.message);
+          }
+        }}
         isWinner={isWinner}
       />
     );

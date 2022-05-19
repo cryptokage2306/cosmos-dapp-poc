@@ -12,17 +12,15 @@ import {
   Row,
 } from "reactstrap";
 import { convertCudosToACudos } from "./utils";
+import { toast } from "react-toastify";
 const ETHEREUM_MAX_AMOUNT = /^\d*\.?\d*$/;
 
 export const Main = () => {
   const history = useHistory();
   const { account, cosmwasmProvider } = useKeplr();
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [bet, setBet] = useState("");
-  //   execute(senderAddress: string, contractAddress: string, msg: Record<string, unknown>, fee: StdFee | "auto" | number, memo?: string, funds?: readonly Coin[])
   const createGame = async () => {
-    setError("");
     setIsLoading(true);
     try {
       if (!cosmwasmProvider)
@@ -43,10 +41,11 @@ export const Main = () => {
         [val]
       );
       const id = tx.logs[0].events[5].attributes[1].value;
+      toast.success(tx.transactionHash);
       history.push(`${GAME_BASE}/${id}`);
     } catch (err) {
       setIsLoading(false);
-      setError((err && err.message) || "Unknown Error Occurred");
+      toast.error((err && err.message) || "Unknown Error Occurred");
     }
   };
 
@@ -83,9 +82,6 @@ export const Main = () => {
         </Col>
         <Col xs="12" className="text-center">
           {isLoading && "Creating Game...."}
-        </Col>
-        <Col xs="12" className="text-center">
-          {!!error && error}
         </Col>
       </Row>
     </>

@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
-const mqlTablet = window.matchMedia(`(max-width: 991px)`);
+import React from "react";
 
 export default ({ value, onClick, className, isNotDisabled, isWinner }) => {
   let size = 90;
@@ -11,7 +10,6 @@ export default ({ value, onClick, className, isNotDisabled, isWinner }) => {
         height: `${size}px`,
         width: `${size}px`,
       }}
-      disabled={!isNotDisabled || isWinner}
       data-pro={value}
       className={className}
       onClick={onClick}

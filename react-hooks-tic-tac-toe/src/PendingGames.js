@@ -11,9 +11,9 @@ export const PendingGames = ({ onClick }) => {
     try {
       setIsLoading(true);
       const data = await fetchPendingGames();
-      const gameData = (await Promise.all(data.map((item) => fetchGame(item))))
-        .map((item, i) => ({ ...item, id: data[i] }))
-        .filter((item) => !item.is_completed);
+      const gameData = (
+        await Promise.all(data.map((item) => fetchGame(item)))
+      ).map((item, i) => ({ ...item, id: data[i] }));
       setPendingGameData(gameData);
       setIsLoading(false);
     } catch (err) {}

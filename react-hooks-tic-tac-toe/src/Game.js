@@ -24,10 +24,10 @@ function Game() {
   const resolveWinner = () => {
     if (!winner || !gameData) return "";
     if (winner === "Cross") {
-      return gameData.nought;
+      return gameData.cross;
     }
     if (winner === "Nought") {
-      return gameData.zero;
+      return gameData.nought;
     }
     if (winner === "Draw") {
       return "Draw";
@@ -63,7 +63,9 @@ function Game() {
 
   useInterval(
     realTime,
-    !!gameData && !gameData.is_completed ? POLLING_INTERVAL * 1000 : null
+    !!gameData && !(gameData.state === "Completed")
+      ? POLLING_INTERVAL * 1000
+      : null
   );
   //----------------------------------------- useState ---------------------------------------------------
   //---------------------------------------- style useRef -------------------------------------------------
@@ -167,7 +169,7 @@ function Game() {
     <div ref={gameContainerEl} className="container game-container">
       {!!gameData && gameData.is_pending && (
         <div>
-          {gameData.is_completed ? (
+          {gameData.state === "Completed" ? (
             <div className="d-flex">Game is cancelled by the creator</div>
           ) : (
             <div className="d-flex">
@@ -179,7 +181,7 @@ function Game() {
             </div>
           )}
 
-          {!gameData.is_completed && gameData.cross === account && (
+          {!(gameData.state === "Completed") && gameData.cross === account && (
             <div>
               <Button color="danger" onClick={handleCancel}>
                 Cancel
@@ -231,14 +233,18 @@ function Game() {
               <div className="text-right">
                 {!!winnerValue && `Winner: ${winnerValue}`}
                 <div className="mt-2">
-                  {!!gameData && !gameData.is_completed && !!winnerValue ? (
+                  {!!gameData &&
+                  !(gameData.state === "Completed") &&
+                  !!winnerValue ? (
                     winner === "Draw" ? (
                       <Button color="success" onClick={withdrawWinning}>
-                        Withdraw Orginal Bet {convertAcudosToCudos(gameData.bet.amount)}CUDOS
+                        Withdraw Orginal Bet{" "}
+                        {convertAcudosToCudos(gameData.bet.amount)}CUDOS
                       </Button>
                     ) : winnerValue === account ? (
                       <Button color="success" onClick={withdrawWinning}>
-                        Withdraw Winnings {convertAcudosToCudos(gameData.bet.amount * 2)}CUDOS
+                        Withdraw Winnings{" "}
+                        {convertAcudosToCudos(gameData.bet.amount * 2)}CUDOS
                       </Button>
                     ) : null
                   ) : null}

@@ -30,14 +30,8 @@ export const AllGameTable = ({ data, onClick }) => {
       },
 
       {
-        Header: "Pending",
-        accessor: "is_pending",
-        Cell: ({ value }) => `${value}`,
-      },
-      {
-        Header: "Completed",
-        accessor: "is_completed",
-        Cell: ({ value }) => `${value}`,
+        Header: "Status",
+        accessor: "state"
       },
     ],
     []

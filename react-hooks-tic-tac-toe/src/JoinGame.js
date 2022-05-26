@@ -28,6 +28,9 @@ export const JoinGame = () => {
       if (!id) throw new Error("Id is not set");
 
       const data = await fetchGame(id);
+      if (data.state !== "Pending") {
+        throw new Error("Game must be in pending state");
+      }
       setBet(data.bet);
       setIsLoading(false);
     } catch (err) {

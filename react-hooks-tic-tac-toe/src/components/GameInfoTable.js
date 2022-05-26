@@ -17,14 +17,8 @@ export const GameInfoTable = ({ data }) => {
           !!value ? `${convertAcudosToCudos(value.amount)}CUDOS` : "",
       },
       {
-        accessor: "is_pending",
-        Header: "Pending",
-        Cell: ({ value }) => String(value),
-      },
-      {
-        accessor: "is_completed",
-        Header: "Completed",
-        Cell: ({ value }) => String(value),
+        accessor: "state",
+        Header: "Status"
       },
     ],
     []

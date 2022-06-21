@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useKeplr } from "../../useKeplr";
-import { QueryMsg } from "./schema/query_msg";
 import JSONForm from "@rjsf/core";
-import query_msg from "./schema/query_msg_nft.json";
+import query_msg from "./schema/query_msg.json";
 import { CONTRACT_ADDRESS } from "../../constant";
 
 export const Cosmwasm = () => {
   const { cosmwasmProvider, account } = useKeplr();
-  const { oneOf } = query_msg;
+  const { oneOf, definitions } = query_msg;
   const [result, setResult] = useState<{
     id: number;
     result: string;
@@ -17,9 +16,9 @@ export const Cosmwasm = () => {
   });
   const d = useMemo(() => {
     return oneOf.map((item) => {
-      const { properties } = item;
       return {
-        properties,
+        ...item,
+        definitions,
       };
     });
   }, []);
@@ -27,22 +26,32 @@ export const Cosmwasm = () => {
     if (!cosmwasmProvider || !account) return;
   }, [cosmwasmProvider, account]);
   const onSubmit =
-    (ind: number) =>
-    async ({ formData }: { formData: QueryMsg }) => {
+    (id: number) =>
+    async ({ formData }: any) => {
       try {
+        console.log({ formData });
+        let formD1: any = {};
+        const data = Object.keys(formData).filter(
+          (item) => item !== "query_denom_by_id"
+        )[0];
+        if (!!data) {
+          formD1[data] = formData[data];
+        } else {
+          formD1 = formData;
+        }
         let result = await cosmwasmProvider?.queryContractSmart(
           CONTRACT_ADDRESS,
-          formData
+          formD1
         );
         console.log(result);
         setResult({
-          id: ind,
+          id,
           result: JSON.stringify(result, null, 2),
         });
       } catch (err) {
         console.error(err);
         setResult({
-          id: ind,
+          id,
           result: err?.message || "error occurred",
         });
       }
@@ -51,12 +60,8 @@ export const Cosmwasm = () => {
     <div>
       Read Contracts
       <div>
-        {d.map((item, id) => (
-          <div>
-            <JSONForm schema={item} onSubmit={onSubmit(id)} />
-            {id == result.id && <section>{result.result}</section>}
-          </div>
-        ))}
+        <JSONForm schema={query_msg} onSubmit={onSubmit(0)} noValidate />
+        {0 == result.id && <section>{result.result}</section>}
       </div>
     </div>
   );

@@ -94,13 +94,13 @@ export const useKeplr = () => {
       setProvider(
         await SigningStargateClient.connectWithSigner(RPC_URL, offlineSigner, {
           prefix: "cudos",
-          gasPrice: GasPrice.fromString(GAS_PRICE),
+          gasPrice: GasPrice.fromString("1acudos"),
         })
       );
       setCosmwasmProvider(
         await SigningCosmWasmClient.connectWithSigner(RPC_URL, offlineSigner, {
           prefix: "cudos",
-          gasPrice: GasPrice.fromString(GAS_PRICE),
+          gasPrice: GasPrice.fromString("1acudos"),
         })
       );
       const tm = await Tendermint34Client.connect(RPC_URL);

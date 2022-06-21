@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useKeplr } from "../../useKeplr";
 import JSONForm from "@rjsf/core";
-import execute_msg from "./schema/execute_msg_nft.json";
+import execute_msg from "./schema/execute_msg.json";
 import { calculateFee } from "@cosmjs/stargate";
 
 import { CONTRACT_ADDRESS } from "../../constant";
